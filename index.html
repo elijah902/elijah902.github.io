@@ -5,17 +5,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Elijah Jones - Portfolio</title>
 <style>
-/* Reset */
 * { margin:0; padding:0; box-sizing:border-box; }
 
-/* Global Styles */
+/* Global Dark Theme */
 body {
   font-family:"Segoe UI", Roboto, Arial, sans-serif;
   background:#0f172a;
   color:#f1f5f9;
   margin:40px;
   overflow-x:hidden;
-  cursor:auto;
+  cursor:none;
 }
 
 nav {
@@ -54,7 +53,7 @@ p { line-height:1.6; color:#e2e8f0; }
 
 .notebook-frame { width:100%; height:600px; border:none; border-radius:12px; margin-top:15px; box-shadow:0 0 25px rgba(56,189,248,0.3); }
 
-/* Coffee/Green Cafe Theme (for Project One) */
+/* Coffee/Green Cafe Theme */
 body.project-one-theme {
   background:#1f2f22; 
   color:#f3e6d8;
@@ -68,11 +67,9 @@ body.project-one-theme p { color:#dfe6d0; }
 body.project-one-theme .project-link {
   background:#6b8e23;
 }
-body.project-one-theme .project-link:hover {
-  background:#4b6c17;
-}
+body.project-one-theme .project-link:hover { background:#4b6c17; }
 
-/* Coffee Cup Cursor */
+/* Coffee Cup Cursor for Project One */
 #spillCanvas {
   position:fixed; top:0; left:0; pointer-events:none; z-index:9998;
 }
@@ -80,17 +77,22 @@ body.project-one-theme .project-link:hover {
   position: fixed; font-size: 28px; pointer-events:none; transform: translate(-50%, -50%);
   z-index:9999; display:none;
 }
+
+/* Star Cursor for all other pages */
+#starCanvas {
+  position:fixed; top:0; left:0; pointer-events:none; z-index:9999;
+}
 </style>
 </head>
 <body>
 
+<canvas id="starCanvas"></canvas>
 <canvas id="spillCanvas"></canvas>
-<div class="coffee-cursor" id="coffeeCursor">☕</div>
+<div class="coffee-cursor" id="coffeeCursor">☕️🌿</div>
 
 <nav>
   <a href="#" onclick="showTab('about')" id="tab-about">About</a>
   <a href="#" onclick="showTab('projects')" id="tab-projects">Projects</a>
-  <a href="#" onclick="showTab('project-one')" id="tab-project-one">Project One</a>
 </nav>
 
 <div id="about" class="card">
@@ -107,11 +109,8 @@ body.project-one-theme .project-link:hover {
 <div id="project-one" class="card" style="display:none;">
   <h1>Project One: Coffee Dataset</h1>
   <p>Explore this dataset interactively:</p>
-  
-  <!-- Static notebook embedded -->
   <iframe class="notebook-frame" src="Project_one.html"></iframe>
-
-  <a class="project-link" href="Project_one.html" target="_blank">☕ View Full Notebook</a>
+  <a class="project-link" href="Project_one.html" target="_blank">☕️🌿 View Full Notebook</a>
 </div>
 
 <script>
@@ -123,40 +122,40 @@ function showTab(tab){
 
   document.getElementById('tab-about').classList.toggle('active', tab==='about');
   document.getElementById('tab-projects').classList.toggle('active', tab==='projects');
-  document.getElementById('tab-project-one').classList.toggle('active', tab==='project-one');
 
   if(tab==='project-one'){
     document.body.classList.add('project-one-theme');
     document.getElementById('coffeeCursor').style.display='block';
+    document.getElementById('starCanvas').style.display='none';
   } else {
     document.body.classList.remove('project-one-theme');
     document.getElementById('coffeeCursor').style.display='none';
+    document.getElementById('starCanvas').style.display='block';
   }
 }
 showTab('about');
 </script>
 
 <script>
-// Coffee cup cursor & spill effect (only on Project One)
-const cursor = document.getElementById('coffeeCursor');
-const canvas = document.getElementById('spillCanvas');
-const ctx = canvas.getContext('2d');
-let particles = [];
+// Coffee cup cursor & spill effect
+const coffeeCursor = document.getElementById('coffeeCursor');
+const spillCanvas = document.getElementById('spillCanvas');
+const spillCtx = spillCanvas.getContext('2d');
+let spillParticles = [];
 
-function resizeCanvas(){
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
+function resizeCanvas() {
+  spillCanvas.width = window.innerWidth;
+  spillCanvas.height = window.innerHeight;
 }
 window.addEventListener('resize', resizeCanvas);
 resizeCanvas();
 
 document.addEventListener('mousemove', e=>{
-  cursor.style.left = e.clientX+'px';
-  cursor.style.top = e.clientY+'px';
-
+  coffeeCursor.style.left = e.clientX+'px';
+  coffeeCursor.style.top = e.clientY+'px';
   if(document.getElementById('project-one').style.display==='block'){
     for(let i=0;i<2;i++){
-      particles.push({
+      spillParticles.push({
         x:e.clientX,
         y:e.clientY+15,
         size:Math.random()*4+2,
@@ -169,21 +168,87 @@ document.addEventListener('mousemove', e=>{
   }
 });
 
-function draw(){
-  ctx.clearRect(0,0,canvas.width,canvas.height);
-  particles.forEach((p,i)=>{
+function drawSpill(){
+  spillCtx.clearRect(0,0,spillCanvas.width,spillCanvas.height);
+  spillParticles.forEach((p,i)=>{
     p.x+=p.speedX;
     p.y+=p.speedY;
     p.life--;
-    ctx.beginPath();
-    ctx.arc(p.x,p.y,p.size,0,Math.PI*2);
-    ctx.fillStyle=p.color;
-    ctx.fill();
-    if(p.life<=0) particles.splice(i,1);
+    spillCtx.beginPath();
+    spillCtx.arc(p.x,p.y,p.size,0,Math.PI*2);
+    spillCtx.fillStyle=p.color;
+    spillCtx.fill();
+    if(p.life<=0) spillParticles.splice(i,1);
   });
-  requestAnimationFrame(draw);
+  requestAnimationFrame(drawSpill);
 }
-draw();
+drawSpill();
+</script>
+
+<script>
+// Star cursor for all pages except Project One
+const starCanvas = document.getElementById('starCanvas');
+const starCtx = starCanvas.getContext('2d');
+let stars = [];
+let width = window.innerWidth;
+let height = window.innerHeight;
+starCanvas.width = width;
+starCanvas.height = height;
+
+window.addEventListener("resize", ()=>{
+  width = window.innerWidth;
+  height = window.innerHeight;
+  starCanvas.width = width;
+  starCanvas.height = height;
+});
+
+document.addEventListener("mousemove", e=>{
+  if(document.getElementById('project-one').style.display!=='block'){
+    for(let i=0;i<1;i++){
+      stars.push({
+        x:e.clientX,
+        y:e.clientY,
+        size:Math.random()*5+2,
+        speedX:(Math.random()-0.5)*0.6,
+        speedY:(Math.random()-0.5)*0.6,
+        color:"#facc15",
+        life:80
+      });
+    }
+  }
+});
+
+function drawStar(x, y, spikes, outerRadius, innerRadius, color){
+  let rot = (Math.PI/2)*3;
+  let cx=x, cy=y;
+  let step=Math.PI/spikes;
+  starCtx.beginPath();
+  starCtx.moveTo(cx,cy-outerRadius);
+  for(let i=0;i<spikes;i++){
+    starCtx.lineTo(cx+Math.cos(rot)*outerRadius,cy+Math.sin(rot)*outerRadius);
+    rot+=step;
+    starCtx.lineTo(cx+Math.cos(rot)*innerRadius,cy+Math.sin(rot)*innerRadius);
+    rot+=step;
+  }
+  starCtx.lineTo(cx,cy-outerRadius);
+  starCtx.closePath();
+  starCtx.fillStyle=color;
+  starCtx.fill();
+}
+
+function animateStars(){
+  starCtx.clearRect(0,0,width,height);
+  stars.forEach((p,i)=>{
+    p.x+=p.speedX;
+    p.y+=p.speedY;
+    p.size*=0.96;
+    p.life--;
+    drawStar(p.x,p.y,5,p.size,p.size/2,p.color);
+    if(p.life<=0||p.size<0.5) stars.splice(i,1);
+  });
+  requestAnimationFrame(animateStars);
+}
+animateStars();
 </script>
 
 </body>
