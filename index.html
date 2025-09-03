@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Elijah Jones - Portfolio</title>
   <style>
-    /* Global Styles */
+    /* Reset + Global */
     * {
       margin: 0;
       padding: 0;
@@ -14,8 +14,9 @@
     body {
       font-family: "Segoe UI", Roboto, Arial, sans-serif;
       background: #0f172a; /* Dark slate background */
-      color: #f1f5f9; /* Soft white text */
+      color: #f1f5f9; /* Soft white */
       margin: 40px;
+      overflow-x: hidden;
     }
 
     /* Navigation */
@@ -43,7 +44,7 @@
       padding: 25px;
       border-radius: 15px;
       box-shadow: 0 8px 16px rgba(0,0,0,0.3);
-      max-width: 700px;
+      max-width: 800px;
       margin-bottom: 20px;
     }
 
@@ -56,10 +57,10 @@
       color: #e2e8f0;
     }
 
-    /* Projects */
+    /* Project Buttons */
     .project-link {
       display: inline-block;
-      margin-top: 10px;
+      margin-top: 12px;
       padding: 10px 16px;
       background: #2563eb;
       color: white;
@@ -72,18 +73,53 @@
       background: #1d4ed8;
     }
 
-    /* Cursor Canvas */
+    /* Embedded Notebook Frame */
+    .notebook-frame {
+      width: 100%;
+      height: 600px;
+      border: none;
+      border-radius: 12px;
+      margin-top: 15px;
+      box-shadow: 0 0 25px rgba(56,189,248,0.3);
+    }
+
+    /* Star Trail Canvas */
     #trail {
       position: fixed;
       top: 0;
       left: 0;
       pointer-events: none;
-      z-index: 10000;
+      z-index: 9998;
+    }
+
+    /* Glowing Custom Cursor */
+    body {
+      cursor: none; /* Hide default cursor */
+    }
+    .custom-cursor {
+      width: 18px;
+      height: 18px;
+      background: #38bdf8; /* Cyan glow */
+      border-radius: 50%;
+      position: fixed;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+      z-index: 9999;
+      box-shadow: 0 0 10px #38bdf8, 0 0 25px #38bdf8;
+      transition: transform 0.08s ease, background 0.3s ease;
+    }
+
+    /* Glow when hovering on links */
+    a:hover ~ .custom-cursor {
+      background: #facc15; /* Golden on hover */
+      box-shadow: 0 0 15px #facc15, 0 0 30px #facc15;
     }
   </style>
 </head>
 <body>
+  <!-- Star Trail + Custom Cursor -->
   <canvas id="trail"></canvas>
+  <div class="custom-cursor"></div>
 
   <!-- Navigation -->
   <nav>
@@ -103,9 +139,19 @@
   <!-- Projects Section -->
   <div id="projects" class="card" style="display:none;">
     <h1>Projects</h1>
-    <p>Here's one of my projects that you can explore interactively:</p>
-    <a class="project-link" href="https://colab.research.google.com/github/yourusername/yourrepo/blob/main/project1.ipynb" target="_blank">
-      Open in Google Colab
+    <p>Here’s one of my projects you can explore interactively:</p>
+    
+    <!-- Google Colab Embed -->
+    <iframe 
+      class="notebook-frame" 
+      src="https://colab.research.google.com/drive/1U7bDVEsbcJP2lhX5AFKgxNCYuy-0jO3_?usp=drive_link">
+    </iframe>
+
+    <!-- Backup Colab Button -->
+    <a class="project-link" 
+      href="https://colab.research.google.com/drive/1U7bDVEsbcJP2lhX5AFKgxNCYuy-0jO3_?usp=drive_link" 
+      target="_blank">
+      🚀 Open in Google Colab
     </a>
   </div>
 
@@ -121,7 +167,7 @@
     showTab('about');
   </script>
 
-  <!-- Star Cursor Trail Script -->
+  <!-- Star Trail Script -->
   <script>
     const canvas = document.getElementById("trail");
     const ctx = canvas.getContext("2d");
@@ -144,9 +190,9 @@
         particles.push({
           x: e.clientX,
           y: e.clientY,
-          size: Math.random() * 6 + 2,
-          speedX: (Math.random() - 0.5) * 3,
-          speedY: (Math.random() - 0.5) * 3,
+          size: Math.random() * 5 + 2,
+          speedX: (Math.random() - 0.5) * 2,
+          speedY: (Math.random() - 0.5) * 2,
           color: "#facc15", // Golden stars
           life: 80
         });
@@ -191,6 +237,27 @@
     }
 
     animate();
+  </script>
+
+  <!-- Glowing Cursor Script -->
+  <script>
+    const cursor = document.querySelector('.custom-cursor');
+
+    document.addEventListener('mousemove', e => {
+      cursor.style.left = e.clientX + 'px';
+      cursor.style.top = e.clientY + 'px';
+    });
+
+    // Make cursor grow on hover
+    const hoverTargets = document.querySelectorAll('a, button');
+    hoverTargets.forEach(el => {
+      el.addEventListener('mouseenter', () => {
+        cursor.style.transform = 'translate(-50%, -50%) scale(1.8)';
+      });
+      el.addEventListener('mouseleave', () => {
+        cursor.style.transform = 'translate(-50%, -50%) scale(1)';
+      });
+    });
   </script>
 </body>
 </html>
