@@ -3,24 +3,83 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Coffee Portfolio - Elijah Jones</title>
+<title>Elijah Jones - Portfolio</title>
 <style>
+/* Reset */
 * { margin:0; padding:0; box-sizing:border-box; }
+
+/* Global Styles */
 body {
   font-family:"Segoe UI", Roboto, Arial, sans-serif;
-  background:#4b3621; color:#f3e6d8; margin:40px; overflow-x:hidden; cursor:none;
+  background:#0f172a;
+  color:#f1f5f9;
+  margin:40px;
+  overflow-x:hidden;
+  cursor:auto;
 }
-nav { display:flex; gap:20px; margin-bottom:30px; }
-nav a { text-decoration:none; color:#d2b48c; font-weight:bold; padding:8px 14px; border-radius:8px; transition:0.3s;}
-nav a:hover, nav a.active { color:#fff; background-color:#3e2723; }
-.card { background:#3e2723; padding:25px; border-radius:15px; box-shadow:0 8px 16px rgba(0,0,0,0.3); max-width:800px; margin-bottom:20px; }
-h1 { color:#d2691e; margin-bottom:15px; }
-p { line-height:1.6; color:#f3e6d8; }
-.project-link { display:inline-block; margin-top:12px; padding:10px 16px; background:#8b4513; color:white; font-weight:bold; text-decoration:none; border-radius:8px; transition:0.3s;}
-.project-link:hover { background:#5c2f0c; }
-.notebook-frame { width:100%; height:600px; border:none; border-radius:12px; margin-top:15px; box-shadow:0 0 25px rgba(210,105,30,0.3);}
-#spillCanvas { position:fixed; top:0; left:0; pointer-events:none; z-index:9998; }
-.coffee-cursor { position: fixed; font-size: 28px; pointer-events:none; transform: translate(-50%, -50%); z-index:9999; }
+
+nav {
+  display:flex; gap:20px; margin-bottom:30px;
+}
+nav a {
+  text-decoration:none;
+  color:#94a3b8;
+  font-weight:bold;
+  padding:8px 14px;
+  border-radius:8px;
+  transition:0.3s;
+}
+nav a:hover, nav a.active {
+  color:#fff;
+  background-color:#1e293b;
+}
+
+.card {
+  background:#1e293b;
+  padding:25px;
+  border-radius:15px;
+  box-shadow:0 8px 16px rgba(0,0,0,0.3);
+  max-width:800px;
+  margin-bottom:20px;
+}
+h1 { color:#38bdf8; margin-bottom:15px; }
+p { line-height:1.6; color:#e2e8f0; }
+
+.project-link {
+  display:inline-block; margin-top:12px; padding:10px 16px;
+  background:#2563eb; color:white; font-weight:bold;
+  text-decoration:none; border-radius:8px; transition:0.3s;
+}
+.project-link:hover { background:#1d4ed8; }
+
+.notebook-frame { width:100%; height:600px; border:none; border-radius:12px; margin-top:15px; box-shadow:0 0 25px rgba(56,189,248,0.3); }
+
+/* Coffee/Green Cafe Theme (for Project One) */
+body.project-one-theme {
+  background:#1f2f22; 
+  color:#f3e6d8;
+}
+body.project-one-theme .card {
+  background:#2c3e30;
+  box-shadow:0 8px 16px rgba(0,0,0,0.3);
+}
+body.project-one-theme h1 { color:#8db600; }
+body.project-one-theme p { color:#dfe6d0; }
+body.project-one-theme .project-link {
+  background:#6b8e23;
+}
+body.project-one-theme .project-link:hover {
+  background:#4b6c17;
+}
+
+/* Coffee Cup Cursor */
+#spillCanvas {
+  position:fixed; top:0; left:0; pointer-events:none; z-index:9998;
+}
+.coffee-cursor {
+  position: fixed; font-size: 28px; pointer-events:none; transform: translate(-50%, -50%);
+  z-index:9999; display:none;
+}
 </style>
 </head>
 <body>
@@ -52,13 +111,11 @@ p { line-height:1.6; color:#f3e6d8; }
   <!-- Static notebook embedded -->
   <iframe class="notebook-frame" src="Project_one.html"></iframe>
 
-  <!-- Optionally add a "Run in Colab" button if needed later -->
-  <a class="project-link" href="https://colab.research.google.com/github/elijahj902/elijahj902.github.io/blob/main/Project_one.ipynb" target="_blank">
-    🚀 Run in Colab
-  </a>
+  <a class="project-link" href="Project_one.html" target="_blank">☕ View Full Notebook</a>
 </div>
 
 <script>
+// Tab switching & theme handling
 function showTab(tab){
   document.getElementById('about').style.display = tab==='about'?'block':'none';
   document.getElementById('projects').style.display = tab==='projects'?'block':'none';
@@ -67,11 +124,20 @@ function showTab(tab){
   document.getElementById('tab-about').classList.toggle('active', tab==='about');
   document.getElementById('tab-projects').classList.toggle('active', tab==='projects');
   document.getElementById('tab-project-one').classList.toggle('active', tab==='project-one');
+
+  if(tab==='project-one'){
+    document.body.classList.add('project-one-theme');
+    document.getElementById('coffeeCursor').style.display='block';
+  } else {
+    document.body.classList.remove('project-one-theme');
+    document.getElementById('coffeeCursor').style.display='none';
+  }
 }
 showTab('about');
 </script>
 
 <script>
+// Coffee cup cursor & spill effect (only on Project One)
 const cursor = document.getElementById('coffeeCursor');
 const canvas = document.getElementById('spillCanvas');
 const ctx = canvas.getContext('2d');
