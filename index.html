@@ -157,6 +157,7 @@
 
   <!-- Tab Switching Script -->
   <script>
+    
     function showTab(tab) {
       document.getElementById('about').style.display = tab === 'about' ? 'block' : 'none';
       document.getElementById('projects').style.display = tab === 'projects' ? 'block' : 'none';
@@ -186,13 +187,13 @@
     });
 
     document.addEventListener("mousemove", e => {
-      for (let i = 0; i < 2; i++) {
+      for (let i = 0; i < 1; i++) {
         particles.push({
           x: e.clientX,
           y: e.clientY,
           size: Math.random() * 5 + 2,
-          speedX: (Math.random() - 0.5) * 2,
-          speedY: (Math.random() - 0.5) * 2,
+          speedX: (Math.random() - 0.5) * .6,
+          speedY: (Math.random() - 0.5) * .6,
           color: "#facc15", // Golden stars
           life: 80
         });
@@ -241,6 +242,10 @@
 
   <!-- Glowing Cursor Script -->
   <script>
+    * {
+      cursor: none !important;
+    }
+
     const cursor = document.querySelector('.custom-cursor');
 
     document.addEventListener('mousemove', e => {
