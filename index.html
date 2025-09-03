@@ -13,6 +13,18 @@
     h1 {
       color: #2c3e50;
     }
+    nav {
+      margin-bottom: 20px;
+    }
+    nav a {
+      text-decoration: none;
+      color: #2c3e50;
+      margin-right: 20px;
+      font-weight: bold;
+    }
+    nav a:hover {
+      color: #3498db;
+    }
     .card {
       background: white;
       padding: 20px;
@@ -20,15 +32,36 @@
       box-shadow: 0 4px 8px rgba(0,0,0,0.1);
       max-width: 600px;
     }
+    #projects {
+      display: none;
+    }
   </style>
 </head>
 <body>
-  <div class="card">
+  <nav>
+    <a href="#" onclick="showTab('about')">About</a>
+    <a href="#" onclick="showTab('projects')">Projects</a>
+  </nav>
+
+  <div id="about" class="card">
     <h1>About Me</h1>
     <p>Hello! My name is <strong>Elijah Jones</strong> (he/him).  
     I’m currently a student majoring in Computer Science with a concentration in data science.  
-    Outside of class, I’m enjoy running, playing guitar, and exploring more about technology.   
+    Outside of class, I enjoy running, playing guitar, and exploring more about technology.   
     I’m excited to share projects here as I build out my portfolio!</p>
   </div>
+
+  <div id="projects" class="card">
+    <h1>Projects</h1>
+    <p>Coming soon! I’ll be adding some of my personal and academic projects here.</p>
+  </div>
+
+  <script>
+    function showTab(tab) {
+      document.getElementById('about').style.display = tab === 'about' ? 'block' : 'none';
+      document.getElementById('projects').style.display = tab === 'projects' ? 'block' : 'none';
+    }
+    showTab('about');
+  </script>
 </body>
 </html>
