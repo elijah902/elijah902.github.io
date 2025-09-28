@@ -42,39 +42,31 @@ def me():
     sp = spotipy.Spotify(auth=token_info['access_token'])
 
     user = sp.current_user()
-    playlists = sp.current_user_playlists(limit=10)
-
+    
+    playlist_ids = ['1TWemhS7D0oiQJ59dJi5Xn']
+    
     data = []
-    for playlist in playlists.get('items', []):
-        try:
-            if not playlist or not playlist.get('id'):
-                continue 
-            
-            tracks = sp.playlist_tracks(playlist['id'])
+    for playlist_id in playlist_ids:
+        try: 
+            tracks = sp.playlist_tracks(playlist_id)
             for item in tracks.get('items', []):
                 track = item.get('track')
                 if not track or not track.get('id'):
-                    continue    
-                    
-                try: 
+                    continue
+
+                try:
                     features = sp.audio_features([track['id']])[0]
-                    if features is not None: 
+                    if features is not None:
                         data.append({
                             "track": track['name'],
                             "artist": track['artists'][0]['name'],
-                            "danceability": features['danceability'],
-                            "energy": features['energy'],
-                            "tempo": features['tempo'],
-                            "valence": features['valence']
+                            "danceability": features['danceability']
                         })
                 except Exception as e:
                     artist_name = track['artists'][0]['name'] if track.get('artists') and track['artists'] else 'Unknown Artist'
                     print(f"Skipping track {track['name']} by {artist_name}: {e}")
                     continue
-                    
         except Exception as e:
-            print(f"Skipping playlist {playlist.get('name') if playlist else 'Unknown'}: {e}")
+            print(f"Skipping playlist {playlist_id}: {e}")
             continue
-        
-    
     return jsonify(user=user['display_name'], tracks=data)
