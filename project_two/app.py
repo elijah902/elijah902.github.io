@@ -1,6 +1,8 @@
+import spotipy
+import os
 from flask import Flask, redirect, request, session, url_for, jsonify
 from spotipy.oauth2 import SpotifyOAuth
-import os
+
 
 app = Flask(__name__)
 app.secret_key = "my_secret_key"
