@@ -29,7 +29,7 @@ def login():
 def callback():
     code = request.args.get('code')
     token_info = sp_oauth.get_access_token(code)
-    print(token_info['skope'])
+    print(token_info['scope'])
     session['token_info'] = token_info
     return redirect(url_for('me'))
 
