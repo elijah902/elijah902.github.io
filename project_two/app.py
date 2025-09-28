@@ -1,4 +1,4 @@
-from flask import Flask, redirect, request, session, url_for
+from flask import Flask, redirect, request, session, url_for, jsonify
 from spotipy.oauth2 import SpotifyOAuth
 import os
 
@@ -31,23 +31,29 @@ def callback():
     return redirect(url_for('me'))
 
 @app.route('/me')
+@app.route('/me')
 def me():
-    token_info = session.get('token_info', None)
+    token_info = session.get('token_info')
     if not token_info:
         return redirect("/")
-        
-    import spotipy
-    sp = spotipy.Spotify(auth=token_info['access_token'])
     
+    sp = spotipy.Spotify(auth=token_info['access_token'])
+
     user = sp.current_user()
     playlists = sp.current_user_playlists(limit=10)
 
     data = []
-    for playlist in playlists['items']:
-        tracks = sp.playlist_tracks(playlist['id'])
-        for item in tracks['items']:
-            track = item['track']
-            if track: 
+    for playlist in playlists.get('items', []):
+        try:
+            if not playlist or not playlist.get('id'):
+                continue 
+            
+            tracks = sp.playlist_tracks(playlist['id'])
+            for item in tracks.get('items', []):
+                track = item.get('track')
+                if not track or not track.get('id'):
+                    continue
+                
                 features = sp.audio_features([track['id']])[0]
                 if features:
                     data.append({
@@ -56,9 +62,10 @@ def me():
                         "danceability": features['danceability'],
                         "energy": features['energy'],
                         "tempo": features['tempo'],
-                        "valence": features["valence"]
+                        "valence": features['valence']
                     })
-                        
-                        
-
-    return {"user": user['display_name'], "tracks": data}
+        except Exception as e:
+            print(f"Skipping playlist {playlist.get('name') if playlist else 'Unknown'}: {e}")
+            continue
+    
+    return jsonify(user=user['display_name'], tracks=data)
