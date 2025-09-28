@@ -11,7 +11,7 @@ app.config['SESSION_COOKIE_NAME'] = 'spotify-login'
 CLIENT_ID = os.getenv('SPOTIFY_CLIENT_ID')
 CLIENT_SECRET = os.getenv('SPOTIFY_CLIENT_SECRET')
 REDIRECT_URI = os.getenv('REDIRECT_URI')
-SCOPE = "user-library-read playlist-read-private user-read-private"
+SCOPE = "user-library-read playlist-read-private user-read-private user-read-email"
 
 sp_oauth = SpotifyOAuth(
     client_id=CLIENT_ID, 
@@ -55,19 +55,26 @@ def me():
                 track = item.get('track')
                 if not track or not track.get('id'):
                     continue
-                
-                features = sp.audio_features([track['id']])[0]
-                if features:
-                    data.append({
-                        "track": track['name'],
-                        "artist": track['artists'][0]['name'],
-                        "danceability": features['danceability'],
-                        "energy": features['energy'],
-                        "tempo": features['tempo'],
-                        "valence": features['valence']
-                    })
+                    
+                try: 
+                    features = sp.audio_features([track['id']])[0]
+                    if features is not None: 
+                        data.append({
+                            "track": track['name'],
+                            "artist": track['artists'][0]['name'],
+                            "danceability": features['danceability'],
+                            "energy": features['energy'],
+                            "tempo": features['tempo'],
+                            "valence": features['valence']
+                        })
+                except Exception as e:
+                    artist_name = track['artists'][0]['name'] if track.get('artists') and track['artists'] else 'Unknown Artist'
+                    print(f"Skipping track {track['name']} by {artist_name}: {e}")
+                    continue
+                    
         except Exception as e:
             print(f"Skipping playlist {playlist.get('name') if playlist else 'Unknown'}: {e}")
             continue
+        
     
     return jsonify(user=user['display_name'], tracks=data)
