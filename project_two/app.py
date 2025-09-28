@@ -11,7 +11,7 @@ app.config['SESSION_COOKIE_NAME'] = 'spotify-login'
 CLIENT_ID = os.getenv('SPOTIFY_CLIENT_ID')
 CLIENT_SECRET = os.getenv('SPOTIFY_CLIENT_SECRET')
 REDIRECT_URI = os.getenv('REDIRECT_URI')
-SCOPE = "user-library-read playlist-read-private"
+SCOPE = "user-library-read playlist-read-private user-read-private"
 
 sp_oauth = SpotifyOAuth(
     client_id=CLIENT_ID, 
@@ -29,6 +29,7 @@ def login():
 def callback():
     code = request.args.get('code')
     token_info = sp_oauth.get_access_token(code)
+    print(token_info['skope'])
     session['token_info'] = token_info
     return redirect(url_for('me'))
 
