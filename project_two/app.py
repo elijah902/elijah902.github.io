@@ -43,7 +43,7 @@ def me():
 
     user = sp.current_user()
     
-    playlist_ids = ['1TWemhS7D0oiQJ59dJi5Xn']
+    playlist_ids = ['37i9dQZF1DXcBWIGoYBM5M']
     
     data = []
     for playlist_id in playlist_ids:
