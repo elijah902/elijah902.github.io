@@ -5,13 +5,13 @@ from spotipy.oauth2 import SpotifyOAuth
 
 
 app = Flask(__name__)
-app.secret_key = os.getenv('SECRET_KEY')
+app.secret_key = os.getenv('SECRET_KEY', 'fallback-secret-key-for-development')
 app.config['SESSION_COOKIE_NAME'] = 'spotify-login'
 
 CLIENT_ID = os.getenv('SPOTIFY_CLIENT_ID')
 CLIENT_SECRET = os.getenv('SPOTIFY_CLIENT_SECRET')
 REDIRECT_URI = os.getenv('REDIRECT_URI')
-SCOPE = "user-library-read playlist-read-private user-read-private user-read-email"
+SCOPE = "user-library-read user-read-private user-read-email"
 
 sp_oauth = SpotifyOAuth(
     client_id=CLIENT_ID, 
@@ -54,7 +54,7 @@ def me():
             for item in tracks.get('items', []):
                 track = item.get('track')
                 if not track or not track.get('id'):
-                    continue
+                    continue    
                     
                 try: 
                     features = sp.audio_features([track['id']])[0]
