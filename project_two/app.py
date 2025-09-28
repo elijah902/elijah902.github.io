@@ -31,7 +31,6 @@ def callback():
     return redirect(url_for('me'))
 
 @app.route('/me')
-@app.route('/me')
 def me():
     token_info = session.get('token_info')
     if not token_info:
