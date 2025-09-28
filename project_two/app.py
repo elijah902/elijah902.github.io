@@ -40,7 +40,7 @@ def me():
     sp = spotipy.Spotify(auth=token_info['access_token'])
     
     user = sp.current_user()
-    playlists - sp.current_user_playlists(limit=10)
+    playlists = sp.current_user_playlists(limit=10)
 
     data = []
     for playlist in playlists['items']:
@@ -48,7 +48,17 @@ def me():
         for item in tracks['items']:
             track = item['track']
             if track: 
-            data.append({
-                "playlist": playlist['name']})
+                features = sp.audio_features([track['id']])[0]
+                if features:
+                    data.append({
+                        "track": track['name'],
+                        "artist": track['artists'][0]['name'],
+                        "danceability": features['danceability'],
+                        "energy": features['energy'],
+                        "tempo": features['tempo'],
+                        "valence": features["valence"]
+                    })
+                        
+                        
 
-    return {"user": user['display_name'], "data": data}
+    return {"user": user['display_name'], "tracks": data}
