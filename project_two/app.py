@@ -11,7 +11,7 @@ app.config['SESSION_COOKIE_NAME'] = 'spotify-login'
 CLIENT_ID = os.getenv('SPOTIFY_CLIENT_ID')
 CLIENT_SECRET = os.getenv('SPOTIFY_CLIENT_SECRET')
 REDIRECT_URI = os.getenv('REDIRECT_URI')
-SCOPE = "user-library-read user-read-private user-read-email"
+SCOPE = "user-library-read user-read-private user-read-email user-top-read"
 
 sp_oauth = SpotifyOAuth(
     client_id=CLIENT_ID, 
