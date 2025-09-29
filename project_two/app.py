@@ -46,10 +46,10 @@ def callback():
 @app.route('/me')
 def me():
     token = get_token()
-    in not token:
+    if not token:
         return redirect('/')
     
-    sp = spotipy.Spotify(auth=token_info['access_token'])
+    sp = spotipy.Spotify(auth=token)
 
     user = sp.current_user()
     
