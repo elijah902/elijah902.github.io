@@ -20,6 +20,16 @@ sp_oauth = SpotifyOAuth(
     scope=SCOPE
 )
 
+def get_token():
+    token_info = session.get('token_info', None)
+    if not token_info:
+        return None
+
+    if sp_oauth.is_token_expired(token_info):
+        token_info = sp_oauth.refresh_access_token(token_info['refresh_token'])
+        session['token_info'] = token_info  
+    return token_info['access_token']
+
 @app.route('/')
 def login():
     auth_url = sp_oauth.get_authorize_url()
@@ -35,9 +45,9 @@ def callback():
 
 @app.route('/me')
 def me():
-    token_info = session.get('token_info')
-    if not token_info:
-        return redirect("/")
+    token = get_token()
+    in not token:
+        return redirect('/')
     
     sp = spotipy.Spotify(auth=token_info['access_token'])
 
