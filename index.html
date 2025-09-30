@@ -102,7 +102,8 @@ body.project-one-theme .project-link:hover { background:#4b6c17; }
 <div id="projects" class="card" style="display:none;">
   <h1>Projects</h1>
   <p>Here are my projects:</p>
-  <a class="project-link" onclick="showTab('project-one')">☕ Project One</a>
+  <a class="project-link" onclick="showTab('project-one')">Project One</a>
+  <a class="project-link" onclick="showTab('project-two)">Project Two</a>
 </div>
 
 <div id="project-one" class="card" style="display:none;">
@@ -111,6 +112,13 @@ body.project-one-theme .project-link:hover { background:#4b6c17; }
   <iframe class="notebook-frame" src="project_one.html"></iframe>
   <a class="project-link" href="project_one.html" target="_blank">View Full Notebook</a>
 </div>
+  
+<div id="project-two" class="card" style="display:none;">
+  <h1>Project Two: Spotify Dataset</h1>
+  <p>Explore this dataset interactively:</p>
+  <iframe class="notebook-frame" src="project_two.html"></iframe>
+  <a class="project-link" href="project_two.html" target="_blank">View Full Notebook</a>
+</div>
 
 <script>
 // Tab switching
@@ -118,6 +126,7 @@ function showTab(tab){
   document.getElementById('about').style.display = tab==='about'?'block':'none';
   document.getElementById('projects').style.display = tab==='projects'?'block':'none';
   document.getElementById('project-one').style.display = tab==='project-one'?'block':'none';
+  document.getElementById('project-two').style.display = tab==='project-two'?'block':'none';
 
   document.getElementById('tab-about').classList.toggle('active', tab==='about');
   document.getElementById('tab-projects').classList.toggle('active', tab==='projects');
@@ -138,43 +147,6 @@ function showTab(tab){
     glow.style.display='block';
   }
 }
-showTab('about');
-</script>
-
-<script>
-// Coffee cursor with tilt & spills
-const coffeeCursor = document.getElementById('coffeeCursor');
-const spillCanvas = document.getElementById('spillCanvas');
-const ctx = spillCanvas.getContext('2d');
-let particles=[];
-
-function resizeSpillCanvas(){
-  spillCanvas.width=window.innerWidth;
-  spillCanvas.height=window.innerHeight;
-}
-window.addEventListener('resize', resizeSpillCanvas);
-resizeSpillCanvas();
-
-document.addEventListener('mousemove', e=>{
-  if(document.getElementById('project-one').style.display==='block'){
-    coffeeCursor.style.left = e.clientX+'px';
-    coffeeCursor.style.top = e.clientY+'px';
-    coffeeCursor.style.transform = `translate(-50%,-50%) rotate(${(e.movementX||0)*2}deg)`;
-
-    for(let i=0;i<2;i++){
-      particles.push({
-        x:e.clientX,
-        y:e.clientY+20,
-        size:Math.random()*4+2,
-        speedX:(Math.random()-0.5)*1,
-        speedY:Math.random()*1+0.5,
-        color:'#6f4e37',
-        life:50
-      });
-    }
-  }
-});
-
 function drawSpill(){
   ctx.clearRect(0,0,spillCanvas.width,spillCanvas.height);
   particles.forEach((p,i)=>{
