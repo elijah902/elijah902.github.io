@@ -93,7 +93,7 @@ body.project-one-theme .project-link:hover { background:#4b6c17; }
 
 <div id="about" class="card">
   <h1>About Me</h1>
-  <p>Hello! My name is <strong>Elijah Jones</strong> (he/him). I’m currently a student majoring in Computer Science with a concentration in data science. I enjoy running, playing guitar, and exploring technology. I’m excited to share my projects!</p>
+  <p>Hello! My name is <strong>Elijah Jones</strong> (he/him). I'm currently a student majoring in Computer Science with a concentration in data science. I enjoy running, playing guitar, and exploring technology. I'm excited to share my projects!</p>
 </div>
 
 <div id="projects" class="card" style="display:none;">
@@ -101,6 +101,7 @@ body.project-one-theme .project-link:hover { background:#4b6c17; }
   <p>Here are my projects:</p>
   <a class="project-link" onclick="showTab('project-one')">Project One</a>
   <a class="project-link" onclick="showTab('project-two')">Project Two</a>
+  <a class="project-link" onclick="showTab('project-three')">Project Three</a>
 </div>
 
 <div id="project-one" class="card" style="display:none;">
@@ -117,6 +118,13 @@ body.project-one-theme .project-link:hover { background:#4b6c17; }
   <a class="project-link" href="project_two.html" target="_blank">View Full Notebook</a>
 </div>
 
+<div id="project-three" class="card" style="display:none;">
+  <h1>Project Three: Your Project Title</h1>
+  <p>Explore this dataset interactively:</p>
+  <iframe class="notebook-frame" src="project_three.html"></iframe>
+  <a class="project-link" href="project_three.html" target="_blank">View Full Notebook</a>
+</div>
+
 <script>
 let activeTab = 'about';
 
@@ -126,6 +134,7 @@ function showTab(tab){
   document.getElementById('projects').style.display = tab==='projects'?'block':'none';
   document.getElementById('project-one').style.display = tab==='project-one'?'block':'none';
   document.getElementById('project-two').style.display = tab==='project-two'?'block':'none';
+  document.getElementById('project-three').style.display = tab==='project-three'?'block':'none';
 
   document.getElementById('tab-about').classList.toggle('active', tab==='about');
   document.getElementById('tab-projects').classList.toggle('active', tab==='projects');
