@@ -102,6 +102,7 @@ body.project-one-theme .project-link:hover { background:#4b6c17; }
   <a class="project-link" onclick="showTab('project-one')">Project One</a>
   <a class="project-link" onclick="showTab('project-two')">Project Two</a>
   <a class="project-link" onclick="showTab('project-three')">Project Three</a>
+  <a class="project-link" onclick="showTab('project-four')">Project Four</a>
 </div>
 
 <div id="project-one" class="card" style="display:none;">
@@ -125,6 +126,13 @@ body.project-one-theme .project-link:hover { background:#4b6c17; }
   <a class="project-link" href="project_three.html" target="_blank">View Full Notebook</a>
 </div>
 
+<div id="project-four" class="card" style="display:none;">
+  <h1>Project Four: Your Project Title</h1>
+  <p>Explore this dataset interactively:</p>
+  <iframe class="notebook-frame" src="project_four.html"></iframe>
+  <a class="project-link" href="project_four.html" target="_blank">View Full Notebook</a>
+</div>
+
 <script>
 let activeTab = 'about';
 
@@ -135,6 +143,7 @@ function showTab(tab){
   document.getElementById('project-one').style.display = tab==='project-one'?'block':'none';
   document.getElementById('project-two').style.display = tab==='project-two'?'block':'none';
   document.getElementById('project-three').style.display = tab==='project-three'?'block':'none';
+  document.getElementById('project-four').style.display = tab==='project-four'?'block':'none';
 
   document.getElementById('tab-about').classList.toggle('active', tab==='about');
   document.getElementById('tab-projects').classList.toggle('active', tab==='projects');
@@ -143,7 +152,7 @@ function showTab(tab){
   const star = document.getElementById('starCanvas');
   const glow = document.getElementById('glowCursor');
 
-  if(tab==='project-one'){
+  if(tab==='project-one' || tab==='project-four'){
     document.body.classList.add('project-one-theme');
     coffee.style.display='block';
     star.style.display='none';
@@ -169,7 +178,7 @@ window.addEventListener('resize', resizeSpillCanvas);
 resizeSpillCanvas();
 
 document.addEventListener('mousemove', e=>{
-  if(activeTab === 'project-one'){
+  if(activeTab === 'project-one' || activeTab === 'project-four'){
     coffeeCursor.style.left = e.clientX+'px';
     coffeeCursor.style.top = e.clientY+'px';
     coffeeCursor.style.transform = `translate(-50%,-50%) rotate(${(e.movementX||0)*2}deg)`;
